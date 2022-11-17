@@ -5,7 +5,7 @@ import axios from "axios";
 
 function Destinies(props) {
 
-    const [selected, setSelected] = useState("");
+    const [selected, setSelected] = useState("nothing");
     const [destinies, setDestinies] = useState(["Marruecos","barcelona"]);
  
     /* useEffect(() => {
@@ -16,6 +16,26 @@ function Destinies(props) {
           
          });
      }, []);*/
+
+     const getDestinies = async () => {
+     console.log("calculando destinos")
+     console.log(`http://localhost:8080/destinies/${props.origin}`)
+      try {
+        axios
+        .get(`http://localhost:8080/destinies/${props.origin}`)
+        .then((response) => { 
+          console.log(response.data)
+          setDestinies(response.data) 
+        });
+     
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+     useEffect(() => {
+      getDestinies();
+    }, [props.origin]);
 
      const handleChange = event => {
         setSelected(event.target.value)
@@ -28,10 +48,10 @@ function Destinies(props) {
        
         <select defaultValue={'DEFAULT'} onChange={(e)=>handleChange(e)}>
         <option value="DEFAULT" disabled>Choose a destiny ...</option>
-        {destinies.map((destiny,index) => {
+        {destinies?.map((destiny,index) => {
           return (
             
-              <option key={index} value={destiny}>{destiny}</option>
+              <option key={index} value={destiny.name}>{destiny.name}</option>
             
           );
         })}

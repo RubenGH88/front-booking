@@ -42,7 +42,7 @@ function BookingPage() {
       <h1>Let's go booking!!</h1>
       <form onSubmit={handleSubmit}>
       <Origins setOrigin={setOrigin} />
-      {origin && <Destinies setDestiny={setDestiny}/>}
+      {origin && <Destinies setDestiny={setDestiny} origin={origin}/>}
       {destiny && <> 
      
       <input onChange={(e)=>setTravel(e.target.value)} type="radio" name="travel" value="ida" /> Ida

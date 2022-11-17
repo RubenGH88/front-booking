@@ -5,39 +5,49 @@ import axios from "axios";
 
 function Origins(props) {
   
-    const origins = [
-        "Sevilla","Barcelona","Londres","Malaga","Estocolmo"
-      ];
-    
-      const [selected, setSelected] = useState("");
+
+      const [origins, setOrigins]= useState(["undefined"])
+     
     
       const handleChange = event => {
-        setSelected(event.target.value)
+     
         props.setOrigin(event.target.value)
        
       };
  
-    /* useEffect(() => {
-       axios
-         .get("http://localhost:4000/")
-         .then((response) => {
-           setOrigins(response.data);
-          
-         });
-     }, []);*/
 
-   
+     const getOrigins = async () => {
+     
+      try {
+        axios
+        .get("http://localhost:8080/origins")
+        .then((response) => { 
+          setOrigins(response.data) 
+        });
+     
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+     useEffect(() => {
+      getOrigins();
+    }, []);
+
+
     return (
         <div>
-          
-            <select defaultValue={'DEFAULT'} onChange={(e)=>handleChange(e)}>
+
+     
+        
+            { <select defaultValue={'DEFAULT'} onChange={(e)=>handleChange(e)}>
             <option value="DEFAULT" disabled>Choose an origin ...</option>
-        {origins.map((origin,index) => (
-          <option key={index} value={origin}>
-            {origin}
+        {origins?.map((origin,index) => (
+          <option key={index} value={origin.name}>
+            {origin.name}
           </option>
         ))}
-        </select>
+        </select> }
       
         </div>
     );
